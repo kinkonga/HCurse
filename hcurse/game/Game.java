@@ -10,7 +10,11 @@ import java.awt.image.DataBufferInt;
 
 import javax.swing.JFrame;
 
-import hcurse.game.gfx.*;
+import hcurse.game.gfx.Colours;
+import hcurse.game.gfx.Font;
+import hcurse.game.gfx.Screen;
+import hcurse.game.gfx.SpriteSheet;
+import hcurse.game.level.Level;
 
 public class Game extends Canvas implements Runnable {
 
@@ -26,6 +30,7 @@ public class Game extends Canvas implements Runnable {
 	public int[] colours = new int[6*6*6];
 	private Screen screen;
 	public InputHandler input;
+	public Level level;
 	
 	public boolean running = false;
 	public int tickCount = 0;
@@ -62,9 +67,13 @@ public class Game extends Canvas implements Runnable {
 				}
 			}
 		}
+		
+		
 		screen = new Screen(WIDTH,HEIGHT,new SpriteSheet("/SpriteSheet8x8.png"));
 		input = new InputHandler(this);
-	
+		level = new Level(64, 64);
+		
+		
 	}
 	
 	public synchronized void start() {
@@ -130,6 +139,8 @@ public class Game extends Canvas implements Runnable {
 		}
 	}
 	
+	private int x = 0, y = 0;
+	
 	public void tick() {
 		tickCount ++;
 		
@@ -137,11 +148,12 @@ public class Game extends Canvas implements Runnable {
 			pixels[i] = i * tickCount;
 			
 		}
-		if(input.up.isPressed()) {screen.yOffset--;}
-		if(input.down.isPressed()) {screen.yOffset++;}
-		if(input.left.isPressed()) {screen.xOffset--;}
-		if(input.right.isPressed()) {screen.xOffset++;}
+		if(input.up.isPressed()) {y--;}
+		if(input.down.isPressed()) {y++;}
+		if(input.left.isPressed()) {x--;}
+		if(input.right.isPressed()) {x++;}
 		
+		level.tick();
 	}
 	public void render() {
 		BufferStrategy bs = getBufferStrategy();
@@ -150,16 +162,22 @@ public class Game extends Canvas implements Runnable {
 			return;
 		}
 		
-		for (int y = 0; y < 32; y++) {
-			for (int x = 0; x < 32; x++) {
-				boolean flipX = x % 2 == 1;
-				boolean flipY = y % 2 == 1;
-				
-				screen.render(x<<3, y<<3, 0, Colours.get(000, 003, 023, 333),flipX ,flipY);
+		int xOffset = x ;
+		int yOffset = y ;
+		
+		level.renderTiles(screen, xOffset, yOffset);
+		
+		for (int x = 0; x < level.width; x++) {
+			int colour = Colours.get(-1, -1, -1, 000);
+			if(x%10 == 0 && x != 0) {
+				colour = Colours.get(-1, -1, -1, 500);
 			}
+			Font.render((x%10)+"", screen, 0+(x*8), 0, colour);
 		}
+		
+		
 		String msg = "HCurse v.0";
-		Font.render(msg, screen, screen.xOffset + screen.width/2 - (msg.length()*8/2), screen.yOffset + screen.height/2, Colours.get(000, 400, 400, 555));
+		Font.render(msg, screen, screen.xOffset + screen.width/2 - (msg.length()*8/2), screen.yOffset + 16, Colours.get(000, 400, 400, 555));
 		
 		for (int y = 0; y < screen.height; y++) {
 			for (int x = 0; x < screen.width; x++) {
@@ -177,7 +195,7 @@ public class Game extends Canvas implements Runnable {
 	}
 	
 	public static void main(String[] args) {
-		
+
 		new Game().start();
 		
 		
