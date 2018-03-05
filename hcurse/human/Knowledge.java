@@ -27,8 +27,8 @@ package hcurse.human;
  * - MOUVEMENT
  * Marche [100]
  * Course [20-80]
- * Escalde [0-80]
- * Nager [0-80]
+ * Escalade [0-80]
+ * Nage [0-80]
  * 
  * - COMMUNICATION
  * Ecriture [0-80]

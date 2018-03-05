@@ -36,6 +36,8 @@ public class Game extends Canvas implements Runnable {
 	public int tickCount = 0;
 	
 	public Game() {
+		
+		//setting Window
 		setMinimumSize(new Dimension(WIDTH*SCALE,HEIGHT*SCALE));
 		setMaximumSize(new Dimension(WIDTH*SCALE,HEIGHT*SCALE));
 		setPreferredSize(new Dimension(WIDTH*SCALE,HEIGHT*SCALE));
@@ -62,8 +64,8 @@ public class Game extends Canvas implements Runnable {
 					int rr = (r*255/5);
 					int gg = (g*255/5);
 					int bb = (b*255/5);
-					
 					colours[index++]= rr << 16 | gg << 8 | bb;
+					
 				}
 			}
 		}
@@ -79,17 +81,14 @@ public class Game extends Canvas implements Runnable {
 	public synchronized void start() {
 		running = true;
 		new Thread(this).start();
-		
-		
 	}
 	public synchronized void stop() {
 		running = false;
-		
-		
 	}
 	
 	@Override
 	public void run() {
+		
 		long lastTime = System.nanoTime();
 		double nsPerTick = 1000000000D/60D;
 		
@@ -173,6 +172,7 @@ public class Game extends Canvas implements Runnable {
 				colour = Colours.get(-1, -1, -1, 500);
 			}
 			Font.render((x%10)+"", screen, 0+(x*8), 0, colour);
+			Font.render((x%10)+"", screen, 0, 0+(x*8), colour);
 		}
 		
 		

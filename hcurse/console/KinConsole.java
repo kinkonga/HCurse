@@ -199,7 +199,7 @@ public class KinConsole extends JFrame {
 		sPrint(s, c, co, bold, 14);
 	}
 	public void sPrint(String s, Color c, char co, boolean bold, int fSize) {
-		sPrint(s, c, co, bold, fSize, "Courier");
+		sPrint(s, c, co, bold, fSize, font.getName());
 	}
 	/**
 	 * Print on Choose Console

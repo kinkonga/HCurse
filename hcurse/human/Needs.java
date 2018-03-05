@@ -2,17 +2,17 @@ package hcurse.human;
 
 import java.awt.Color;
 
-public class Need {
+public class Needs {
 	
 	// ENUM -----------------------------------------------------
 	
-	public enum Nee {
+	public enum Need {
 		FOOD(0, "FOOD", "F"), HEALTH(2, "HEALTH", "H"), SOCIAL(4, "SONIAL", "S"), ENVIRONMENT(5, "ENVIRONMENT", "E");
 		private int id = 0;
 		private String name = null;
 		private String firstCh = null;
 
-		Nee(int id, String name, String firstCh) {
+		Need(int id, String name, String firstCh) {
 			this.id = id;
 			this.name = name;
 			this.firstCh = firstCh;
@@ -32,18 +32,18 @@ public class Need {
 	
 	// CONSTRUCTOR ----------------------------------------------
 	
-	public static Need build() {
-		return new Need();
+	public static Needs build() {
+		return new Needs();
 	}
 	
 	// PRIVATE --------------------------------------------------
 	
-	private Need() {
-		for (Nee nee : Nee.values()) {
+	private Needs() {
+		for (Need nee : Need.values()) {
 			CreateNeed(nee);
 		}	
 	}
-	private void CreateNeed(Nee n) {
+	private void CreateNeed(Need n) {
 
 		int rdmNum = (int) (Math.random() * 100);
 		value[n.id] = rdmNum;
@@ -58,20 +58,20 @@ public class Need {
 	// PUBLIC ---------------------------------------------------
 	
 	public void handleTime() {
-		value[Nee.FOOD.id] -= 0.1;
+		value[Need.FOOD.id] -= 0.1;
 	}
 	
 	public String getWarningMessage() {
 		String s = "";
 		
-		if(value[Nee.FOOD.id] <= limitMin[Nee.FOOD.id]) {
+		if(value[Need.FOOD.id] <= limitMin[Need.FOOD.id]) {
 			s += "I'm hungry !\n";
 		}
 		
 		return s;
 	}
 	
-	public Color setColor(Nee n) {
+	public Color setColor(Need n) {
 		Color c = Color.GREEN;
 		
 		if(value[n.id] <= limitMin[n.id]) {
@@ -83,19 +83,19 @@ public class Need {
 		
 		return c;
 	}
-	public String getName(Nee n) {
+	public String getName(Need n) {
 		return this.getName(n, false);
 	}
-	public String getName(Nee n, boolean shortName) {
+	public String getName(Need n, boolean shortName) {
 		return (shortName) ? n.firstCh : n.name;
 	}
-	public double getValue(Nee n) {
+	public double getValue(Need n) {
 		return value[n.id];
 	}
-	public int getLimitMax(Nee n) {
+	public int getLimitMax(Need n) {
 		return limitMax[n.id];
 	}
-	public int getLimitMin(Nee n) {
+	public int getLimitMin(Need n) {
 		return limitMin[n.id];
 	}
 

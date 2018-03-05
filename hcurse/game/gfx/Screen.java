@@ -39,11 +39,13 @@ public class Screen {
 		for (int y = 0; y < 8; y++) {
 			if(y + yPos < 0 || y + yPos >= height) continue;
 			int ySheet = y;
+			//mirror
 			if(mirrorY)ySheet = 7 - y;
 			
 			for (int x = 0; x < 8; x++) {
 				if(x + xPos < 0 || x + xPos >= width) continue;
 				int xSheet = x;
+				//mirror
 				if(mirrorX)xSheet = 7 - x;
 				
 				int col = (colour >> (sheet.pixels[xSheet+ySheet*sheet.width+tileOffset]*8))&255;

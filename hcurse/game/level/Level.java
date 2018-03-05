@@ -33,6 +33,7 @@ public class Level {
 	}
 	
 	public void renderTiles(Screen screen, int xOffset, int yOffset) {
+		
 		if(xOffset<0) xOffset = 0;
 		if(xOffset>((width<<3)-screen.width)) xOffset = ((width<<3)-screen.width);
 		
@@ -52,16 +53,10 @@ public class Level {
 		
 	}
 
-
 	private Tile getTile(int x, int y) {
 		if(x<0||x>width||y<0||y>height)return Tile.VOID;
 		return Tile.tiles[tiles[x=y*width]];
 	}
-	
-	
-	
-	
-	
 	
 	
 	

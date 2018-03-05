@@ -7,21 +7,32 @@ package hcurse.human;
  */
 public class Attributes {
 
-	public enum Att { 
+	public enum Attribute { 
 		STRENGHT(0, "Strenght" , "STR"), 
-		DEXTERITY(1, "Dexterity" , "DEX"), 
-		CONSTITUTION(2, "Constitution", "CON"), 
-		STAMINA(3,"Stamina", "STA"), 
-		INTELLIGENCE(4,"Intelligence", "INT"), 
-		PERCEPTION(5, "Perception", "PER"), 
-		CHARISM(6, "Charism", "CHA"), 
-		WILLPOWER(7, "Willpower", "WIL");
+		AGILITY(1, "Agility" , "AGI"), 
+		TOUGHNESS(2, "Toughness", "TOU"), 
+		ENDURANCE(3,"Endurance", "END"), 
+		RECUPERATION(4,"Recuperation", "REC"), 
+		DISEASE_RESISTANCE(5, "Disease Resistance", "DRE"), 
+		ANALYTICAL_ABILITY(6, "Analytical Ability", "AAB"),
+		CREATIVITY(7, "Creativity", "CRE"),
+		EMPATHY(8, "Empathy", "EMP"),
+		FOCUS(9, "Focus", "FOC"),
+		INTUITION(10, "Intuition", "INT"),
+		KINESTHETIC_SENSE(11,"Kinesthetic Sense", "KIS"),
+		LINGUISTIC_ABILITY(12,"Linguistic Ability", "LAB"),
+		MEMORY(13,"Memory", "MEM"),
+		MUSICALITY(14,"Musicality", "MUS"),
+		PATIENCE(15,"Patience", "PAT"),
+		SOCIAL_AWARENESS(16,"Social Awareness", "SAW"),
+		SPACIAL_SENSE(17,"Spacial Sense", "SPS"),
+		WILLPOWER(18, "Willpower", "WIL");
 
 		private int id = 0;
 		private String name = null;
 		private String shortName = null;
 
-		Att(int id, String n, String sn) {
+		Attribute(int id, String n, String sn) {
 			this.id = id;
 			this.name = n;
 			this.shortName = sn;
@@ -35,7 +46,7 @@ public class Attributes {
 
 	// VARIABLES ------------------------------------------------
 	
-	int[] value = new int[8];
+	int[] value = new int[19];
 	
 	// CONSTRUCTOR ----------------------------------------------
 	
@@ -47,18 +58,21 @@ public class Attributes {
 	public static Attributes build(int bonus) {
 		return new Attributes(bonus);
 	}
+	public static Attributes build2(int bonus) {
+		return new Attributes(bonus-1);
+	}
 	
 	// PRIVATE --------------------------------------------------
 	
 	private Attributes(int bonus) {
 		
-		for (Att att : Att.values()) {
+		for (Attribute att : Attribute.values()) {
 			create(att.name, 0, att.id);
 		}
 	}
 	private void create(String name, int bonus, int id) {
 
-		int rdmNum = (int) (Math.random() * 10);
+		int rdmNum = (int) (Math.random() * 100);
 		value[id] = rdmNum + bonus;
 		
 	}
@@ -78,7 +92,7 @@ public class Attributes {
 	 * 				 
 	 * @return int value
 	 */
-	public int getValue(Att n) {
+	public int getValue(Attribute n) {
 		return this.value[n.id];
 
 	}
@@ -95,7 +109,7 @@ public class Attributes {
 	 * 				 
 	 * @return String name
 	 */
-	public String getName(Att n) {
+	public String getName(Attribute n) {
 		return n.name;
 	}
 	/**
@@ -112,7 +126,7 @@ public class Attributes {
 	 * 				 
 	 * @return String name
 	 */
-	public String getName(Att n, boolean shortName) {
+	public String getName(Attribute n, boolean shortName) {
 		return (shortName) ? n.shortName : n.name;
 	}
 	
