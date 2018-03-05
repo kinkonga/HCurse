@@ -1,12 +1,14 @@
 package hcurse.human;
 
+import hcurse.human.Attributes.Attribute;
+
 public class Skills {
 	
 	// ENUM -----------------------------------------------------
 	
 	public enum Skill { 
 		FARMING(0,"Farming"),
-		ENERGY_MAKING(1,"Energy Making");
+		COLLECTING(1,"Collecting");
 
 		private int id = 0;
 		private String name = null;
@@ -28,20 +30,54 @@ public class Skills {
 	
 	// CONSTRUCTOR ----------------------------------------------
 	
-	public static void build(Attributes att) {
-		new Skills(att);
+	public static Skills build(Attributes att) {
+		return new Skills(att);
 	}
 	
 	// PRIVATE --------------------------------------------------
+	
 	private Skills(Attributes att) {
-		for (Skill skill : Skill.values()) {
-			
+		for (Skill a : Skill.values()) {
+			createSkill(a, att, getLinkAttribute(a));
 		}
+	}
+	private void createSkill(Skill s, Attributes att, Attributes.Attribute[] a) {
+		
+		int temp = 0;
+		
+		for(Attribute b : a) {
+		temp += att.getValue(b);	
+		}
+		
+		lvl[s.id] = (temp/a.length) ;
+		
 	}
 
 	// PUBLIC ---------------------------------------------------
-
-	public void printSkill() {
-		//System.out.println(name + " : " + lvl);
+	
+	public Attribute[] getLinkAttribute(Skill s) {
+		Attribute[] a = new Attribute[3];
+		
+		//Farming
+		if(s == Skill.FARMING) {
+			a[0] = Attribute.STRENGHT;
+			a[1] = Attribute.AGILITY;
+			a[2] = Attribute.KINESTHETIC_SENSE;
+		} 
+		//Collecting
+		else if(s == Skill.COLLECTING) {
+			a[0] = Attribute.AGILITY;
+			a[1] = Attribute.SPACIAL_SENSE;
+			a[2] = Attribute.PATIENCE;
+		}
+		
+		return a; 
 	}
+	public String getName(Skill s) {
+		return s.name;
+	}
+	public int getLvl(Skill s) {
+		return this.lvl[s.id];
+	}
+	
 }

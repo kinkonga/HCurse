@@ -58,19 +58,16 @@ public class Attributes {
 	public static Attributes build(int bonus) {
 		return new Attributes(bonus);
 	}
-	public static Attributes build2(int bonus) {
-		return new Attributes(bonus-1);
-	}
 	
 	// PRIVATE --------------------------------------------------
 	
 	private Attributes(int bonus) {
 		
 		for (Attribute att : Attribute.values()) {
-			create(att.name, 0, att.id);
+			create(0, att.id);
 		}
 	}
-	private void create(String name, int bonus, int id) {
+	private void create(int bonus, int id) {
 
 		int rdmNum = (int) (Math.random() * 100);
 		value[id] = rdmNum + bonus;
@@ -81,15 +78,7 @@ public class Attributes {
 
 	/**
 	 * Return a String containing the attributes value you want.
-	 * @param n Name STRENGHT
-	 * 				 DEXTERITY
-	 * 				 CONSTITUTION
-	 * 				 STAMINA
-	 * 				 INTELLIGENCE
-	 * 				 PERCEPTION
-	 * 				 CHARISM
-	 * 				 WILLPOWER
-	 * 				 
+	 * @param n Name  
 	 * @return int value
 	 */
 	public int getValue(Attribute n) {
@@ -98,15 +87,7 @@ public class Attributes {
 	}
 	/**
 	 * Return a String containing the attributes Name you want.
-	 * @param n Name STRENGHT
-	 * 				 DEXTERITY
-	 * 				 CONSTITUTION
-	 * 				 STAMINA
-	 * 				 INTELLIGENCE
-	 * 				 PERCEPTION
-	 * 				 CHARISM
-	 * 				 WILLPOWER
-	 * 				 
+	 * @param n Name 
 	 * @return String name
 	 */
 	public String getName(Attribute n) {
@@ -114,14 +95,7 @@ public class Attributes {
 	}
 	/**
 	 * Return a String containing the attributes Name you want.
-	 * @param n Name STRENGHT
-	 * 				 DEXTERITY
-	 * 				 CONSTITUTION
-	 * 				 STAMINA
-	 * 				 INTELLIGENCE
-	 * 				 PERCEPTION
-	 * 				 CHARISM
-	 * 				 WILLPOWER
+	 * @param n Name 
 	 * @param shortName boolean true if you want short name
 	 * 				 
 	 * @return String name

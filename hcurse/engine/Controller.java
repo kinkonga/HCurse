@@ -132,7 +132,7 @@ public class Controller {
 
 	public void help() {
 		kCons.leftPrintln("commands : ", Color.WHITE);
-		kCons.leftPrintln("/help /addTime /stop /print /clear", Color.GREEN);
+		kCons.leftPrintln("/help /addTime /stop /print /list /create /clear", Color.GREEN);
 
 	}
 
