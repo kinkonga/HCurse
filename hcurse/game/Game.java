@@ -20,19 +20,19 @@ import hcurse.human.CHuman;
 public class Game extends Canvas implements Runnable {
 
 	private static final long serialVersionUID = 1L;
-	public static final int WIDTH = 256;
-	public static final int HEIGHT = WIDTH/12*9;
-	public static final int SCALE = 3;
-	public static final String NAME = "Game";
+	public static final int WIDTH = 600; //a sortir
+	public static final int HEIGHT = WIDTH/12*9; // a sortir
+	public static final int SCALE = 2; // a sortir
+	public static final String NAME = "Game"; // a sortir
 	
-	private JFrame frame;
+	private JFrame frame; // a sortir
 	private BufferedImage image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
 	private int[] pixels = ((DataBufferInt)image.getRaster().getDataBuffer()).getData();
 	public int[] colours = new int[6*6*6];
 	private Screen screen;
-	public InputHandler input;
-	public Level level;
-	public CHuman player;
+	public InputHandler input; // a sortir
+	public Level level; // a sortir
+	public CHuman player; // a sortir
 	
 	public boolean running = false;
 	public int tickCount = 0;
@@ -76,8 +76,8 @@ public class Game extends Canvas implements Runnable {
 		screen = new Screen(WIDTH,HEIGHT,new SpriteSheet("/SpriteSheet8x8.png"));
 		input = new InputHandler(this);
 		level = new Level(64, 64);
-		player = new CHuman(level, 0, 0, input);
-		level.addEntity(player);
+		player = new CHuman(level, 0, 0, input); // a sortir
+		level.addEntity(player); // rendre public
 		
 		
 	}
@@ -90,8 +90,9 @@ public class Game extends Canvas implements Runnable {
 		running = false;
 	}
 	
+	// a sortir pour mettre dans le controller
 	@Override
-	public void run() {
+	public void run() { 
 		
 		long lastTime = System.nanoTime();
 		double nsPerTick = 1000000000D/60D;
