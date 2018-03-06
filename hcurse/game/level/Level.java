@@ -1,13 +1,18 @@
 package hcurse.game.level;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import hcurse.game.gfx.Screen;
 import hcurse.game.level.tiles.Tile;
+import hcurse.human.Entity;
 
 public class Level {
 
 	private byte[] tiles;
 	public int width;
 	public int height;
+	public List<Entity> entities = new ArrayList<Entity>();
 	
 	
 	public Level(int width, int height) {
@@ -50,12 +55,24 @@ public class Level {
 	}
 	
 	public void tick() {
-		
+		for(Entity e : entities) {
+			e.tick();
+		}
 	}
 
 	private Tile getTile(int x, int y) {
 		if(x<0||x>width||y<0||y>height)return Tile.VOID;
 		return Tile.tiles[tiles[x=y*width]];
+	}
+	
+	public void renderEntities(Screen screen) {
+		for (Entity e : entities) {
+			e.render(screen);
+		}
+	}
+
+	public void addEntity(Entity entity) {
+		this.entities.add(entity);
 	}
 	
 	

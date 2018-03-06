@@ -15,6 +15,7 @@ import hcurse.game.gfx.Font;
 import hcurse.game.gfx.Screen;
 import hcurse.game.gfx.SpriteSheet;
 import hcurse.game.level.Level;
+import hcurse.human.CHuman;
 
 public class Game extends Canvas implements Runnable {
 
@@ -31,6 +32,7 @@ public class Game extends Canvas implements Runnable {
 	private Screen screen;
 	public InputHandler input;
 	public Level level;
+	public CHuman player;
 	
 	public boolean running = false;
 	public int tickCount = 0;
@@ -74,6 +76,8 @@ public class Game extends Canvas implements Runnable {
 		screen = new Screen(WIDTH,HEIGHT,new SpriteSheet("/SpriteSheet8x8.png"));
 		input = new InputHandler(this);
 		level = new Level(64, 64);
+		player = new CHuman(level, 0, 0, input);
+		level.addEntity(player);
 		
 		
 	}
@@ -131,6 +135,7 @@ public class Game extends Canvas implements Runnable {
 			if(System.currentTimeMillis() - lastTimer > 1000) {
 				lastTimer += 1000;
 				System.out.println("[TICKS:"+ticks+"/FRAMES:"+frames+"]");
+				System.out.println("[Colours.get = "+Colours.get(000, 111, 222, 333));
 				frames = 0;
 				ticks = 0;
 			}
@@ -138,7 +143,7 @@ public class Game extends Canvas implements Runnable {
 		}
 	}
 	
-	private int x = 0, y = 0;
+//	private int x = 0, y = 0;
 	
 	public void tick() {
 		tickCount ++;
@@ -147,10 +152,10 @@ public class Game extends Canvas implements Runnable {
 			pixels[i] = i * tickCount;
 			
 		}
-		if(input.up.isPressed()) {y--;}
-		if(input.down.isPressed()) {y++;}
-		if(input.left.isPressed()) {x--;}
-		if(input.right.isPressed()) {x++;}
+//		if(input.up.isPressed()) {y--;}
+//		if(input.down.isPressed()) {y++;}
+//		if(input.left.isPressed()) {x--;}
+//		if(input.right.isPressed()) {x++;}
 		
 		level.tick();
 	}
@@ -161,8 +166,8 @@ public class Game extends Canvas implements Runnable {
 			return;
 		}
 		
-		int xOffset = x ;
-		int yOffset = y ;
+		int xOffset = player.x - (screen.width /2) ;
+		int yOffset = player.y - (screen.height /2) ;
 		
 		level.renderTiles(screen, xOffset, yOffset);
 		
@@ -175,6 +180,7 @@ public class Game extends Canvas implements Runnable {
 			Font.render((x%10)+"", screen, 0, 0+(x*8), colour);
 		}
 		
+		level.renderEntities(screen);
 		
 		String msg = "HCurse v.0";
 		Font.render(msg, screen, screen.xOffset + screen.width/2 - (msg.length()*8/2), screen.yOffset + 16, Colours.get(000, 400, 400, 555));
