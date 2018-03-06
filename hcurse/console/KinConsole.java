@@ -33,6 +33,7 @@ public class KinConsole extends JFrame {
 	public StyledDocument rightDocument;
 	
 	public JTextField input;
+	public PixelCanvas pCanvas;
 	
 
 	Font font = new Font("Courier", Font.PLAIN, 14);
@@ -48,7 +49,9 @@ public class KinConsole extends JFrame {
 
 	private void build() {
 		
+		//TODO a reconstruire
 		setTitle("Human Curse"); 
+		setPreferredSize(ConsSize);
 		setSize(ConsSize); 
 		setLocationRelativeTo(null);
 		setResizable(false); 
@@ -62,6 +65,8 @@ public class KinConsole extends JFrame {
 		topConsole.setFont(font);
 		
 		rightConsole = new JTextPane();
+		rightConsole.setMinimumSize(new Dimension(330, 100));
+		rightConsole.setMinimumSize(new Dimension(330, 100));
 		rightConsole.setMinimumSize(new Dimension(330, 100));
 		rightConsole.setBorder(null);
 		rightConsole.setForeground(Color.WHITE);
@@ -87,6 +92,8 @@ public class KinConsole extends JFrame {
 		leftDocument = leftConsole.getStyledDocument();
 		rightDocument = rightConsole.getStyledDocument();
 		
+		pCanvas = PixelCanvas.Build(400, 580,2);
+		pack();
 		setContentPane(buildContentPane());
 		setVisible(true);
 	}
@@ -99,7 +106,10 @@ public class KinConsole extends JFrame {
 		JPanel gridPanel = new JPanel();
 		gridPanel.setLayout(new GridLayout(1,2));
 		gridPanel.add(leftConsole);
-		gridPanel.add(rightConsole);
+		
+		
+		//gridPanel.add(rightConsole);
+		gridPanel.add(pCanvas);
 		
 		
 		panel.add(topConsole, BorderLayout.NORTH);

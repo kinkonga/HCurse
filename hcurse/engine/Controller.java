@@ -17,7 +17,7 @@ public class Controller implements Runnable {
 	Clock c = new Clock();
 	int remainMinutes = 0;
 	String buffer = "";
-	PixelCanvas pCanvas = new PixelCanvas();
+	//PixelCanvas pCanvas = new PixelCanvas();
 	
 	public boolean running = false;
 	public int tickCount = 0;
@@ -35,7 +35,9 @@ public class Controller implements Runnable {
 		double delta = 0;
 		
 		//Temporary Pixel Canvas init
-		pCanvas.init();
+		//pCanvas.init();
+		kCons.pCanvas.init();
+		
 		//Terminal initialization
 		help();
 		kCons.topPrint(c.toString(), Color.CYAN);
@@ -66,7 +68,9 @@ public class Controller implements Runnable {
 			
 			while(delta >= 1) {
 				ticks++;
-				pCanvas.tick();
+				//pCanvas.tick();
+				kCons.pCanvas.tick();
+				
 				//render terminal
 				kCons.topClear();
 				
@@ -93,7 +97,9 @@ public class Controller implements Runnable {
 			
 			if (shouldRender) {
 				frames++;
-				pCanvas.render();
+				//pCanvas.render();
+				kCons.pCanvas.render();
+				
 				
 				
 			}
