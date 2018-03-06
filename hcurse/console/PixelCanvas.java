@@ -44,6 +44,7 @@ public class PixelCanvas extends Canvas {
 	// PRIVATE --------------------------------------------------
 	
 	/**
+	 * PixelCanvas
 	 * @param w witdh 
 	 * @param h height
 	 * @param s scale
@@ -62,11 +63,6 @@ public class PixelCanvas extends Canvas {
 		setMinimumSize(new Dimension(width*scale,height*scale));
 		setMaximumSize(new Dimension(width*scale,height*scale));
 		setPreferredSize(new Dimension(width*scale,height*scale));
-	}
-
-	// PUBLIC ---------------------------------------------------
-	
-	public void init() {
 		
 		//initialize colours[]
 		int index = 0;
@@ -84,34 +80,44 @@ public class PixelCanvas extends Canvas {
 		
 		//initialize Screen
 		screen = new Screen(width,height,new SpriteSheet("/SpriteSheet8x8.png"));
-		input = new InputHandler(this);
-		level = new Level(64, 64); //TODO level à mettre dans le controller
+		input = new InputHandler(this); //TODO input a passer dans le controller
+		level = new Level(64, 64); //TODO level à passer dans le controller
 		player = new CHuman(level, 0, 0, input); //TODO integrer a Human et a controller
 		level.addEntity(player);//TODO addEntity recuperable dans le controller
+		
 	}
+
+	// PUBLIC ---------------------------------------------------
 	
 	public void tick() {
-		tickCount ++;
 		
+		/*
+		tickCount ++;
 		for(int i = 0; i < pixels.length; i++) {
 			pixels[i] = i * tickCount;
 			
 		}
+		*/
 		level.tick();
 	}
 	
 	public void render() {
+		
+		
+		
 		BufferStrategy bs = getBufferStrategy();
+		
 		if(bs == null) {
 			createBufferStrategy(3);
 			return;
 		}
 		
+		
 		int xOffset = player.x - (screen.width /2) ;
 		int yOffset = player.y - (screen.height /2) ;
 		
 		level.renderTiles(screen, xOffset, yOffset);
-		
+		/*
 		for (int x = 0; x < level.width; x++) {
 			int colour = Colours.get(-1, -1, -1, 000);
 			if(x%10 == 0 && x != 0) {
@@ -120,11 +126,14 @@ public class PixelCanvas extends Canvas {
 			Font.render((x%10)+"", screen, 0+(x*8), 0, colour);
 			Font.render((x%10)+"", screen, 0, 0+(x*8), colour);
 		}
+		*/
 		
 		level.renderEntities(screen);
 		
+		/*
 		String msg = "HCurse v.0";
 		Font.render(msg, screen, screen.xOffset + screen.width/2 - (msg.length()*8/2), screen.yOffset + 16, Colours.get(000, 400, 400, 555));
+		*/
 		
 		for (int y = 0; y < screen.height; y++) {
 			for (int x = 0; x < screen.width; x++) {
@@ -141,4 +150,7 @@ public class PixelCanvas extends Canvas {
 		
 	}
 
+	public Screen getScreen() {
+		return screen;
+	}
 }

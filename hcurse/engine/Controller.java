@@ -34,10 +34,6 @@ public class Controller implements Runnable {
 		long lastTimer = System.currentTimeMillis();
 		double delta = 0;
 		
-		//Temporary Pixel Canvas init
-		//pCanvas.init();
-		kCons.pCanvas.init();
-		
 		//Terminal initialization
 		help();
 		kCons.topPrint(c.toString(), Color.CYAN);
@@ -98,6 +94,8 @@ public class Controller implements Runnable {
 			if (shouldRender) {
 				frames++;
 				//pCanvas.render();
+	
+				
 				kCons.pCanvas.render();
 				
 				
