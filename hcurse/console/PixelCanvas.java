@@ -1,0 +1,144 @@
+package hcurse.console;
+
+import java.awt.BorderLayout;
+import java.awt.Canvas;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.image.BufferStrategy;
+import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferInt;
+
+import javax.swing.JFrame;
+
+import hcurse.game.Game;
+import hcurse.game.InputHandler;
+import hcurse.game.gfx.Colours;
+import hcurse.game.gfx.Font;
+import hcurse.game.gfx.Screen;
+import hcurse.game.gfx.SpriteSheet;
+import hcurse.game.level.Level;
+import hcurse.human.CHuman;
+
+public class PixelCanvas extends Canvas {
+	private static final long serialVersionUID = 1L;
+	public int WIDTH = 256;
+	public int HEIGHT = WIDTH/12*9;
+	public int SCALE = 3;
+	public static final String NAME = "Game";
+	
+	private JFrame frame; 
+	private BufferedImage image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
+	private int[] pixels = ((DataBufferInt)image.getRaster().getDataBuffer()).getData();
+	public int[] colours = new int[6*6*6];
+	private Screen screen;
+	public InputHandler input;
+	public Level level;
+	public CHuman player;
+	
+	public boolean running = false;
+	public int tickCount = 0;
+	
+	public PixelCanvas() {
+		
+		//setting Window
+		setMinimumSize(new Dimension(WIDTH*SCALE,HEIGHT*SCALE));
+		setMaximumSize(new Dimension(WIDTH*SCALE,HEIGHT*SCALE));
+		setPreferredSize(new Dimension(WIDTH*SCALE,HEIGHT*SCALE));
+		
+		frame = new JFrame(NAME);
+		
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setLayout(new BorderLayout());
+		
+		frame.add(this, BorderLayout.CENTER);
+		frame.pack();
+		
+		frame.setResizable(false);
+		frame.setLocationRelativeTo(null);
+		frame.setVisible(true);
+	}
+	
+	public void init() {
+		
+		int index = 0;
+		for(int r=0; r<6;r++) {
+			for(int g=0; g<6;g++) {
+				for(int b=0; b<6;b++) {
+					int rr = (r*255/5);
+					int gg = (g*255/5);
+					int bb = (b*255/5);
+					colours[index++]= rr << 16 | gg << 8 | bb;
+					
+				}
+			}
+		}
+		
+		
+		screen = new Screen(WIDTH,HEIGHT,new SpriteSheet("/SpriteSheet8x8.png"));
+		input = new InputHandler(this);
+		level = new Level(64, 64);
+		player = new CHuman(level, 0, 0, input);
+		level.addEntity(player);
+		
+		
+	}
+	
+	
+//	private int x = 0, y = 0;
+	
+	public void tick() {
+		tickCount ++;
+		
+		for(int i = 0; i < pixels.length; i++) {
+			pixels[i] = i * tickCount;
+			
+		}
+//		if(input.up.isPressed()) {y--;}
+//		if(input.down.isPressed()) {y++;}
+//		if(input.left.isPressed()) {x--;}
+//		if(input.right.isPressed()) {x++;}
+		
+		level.tick();
+	}
+	public void render() {
+		BufferStrategy bs = getBufferStrategy();
+		if(bs == null) {
+			createBufferStrategy(3);
+			return;
+		}
+		
+		int xOffset = player.x - (screen.width /2) ;
+		int yOffset = player.y - (screen.height /2) ;
+		
+		level.renderTiles(screen, xOffset, yOffset);
+		
+		for (int x = 0; x < level.width; x++) {
+			int colour = Colours.get(-1, -1, -1, 000);
+			if(x%10 == 0 && x != 0) {
+				colour = Colours.get(-1, -1, -1, 500);
+			}
+			Font.render((x%10)+"", screen, 0+(x*8), 0, colour);
+			Font.render((x%10)+"", screen, 0, 0+(x*8), colour);
+		}
+		
+		level.renderEntities(screen);
+		
+		String msg = "HCurse v.0";
+		Font.render(msg, screen, screen.xOffset + screen.width/2 - (msg.length()*8/2), screen.yOffset + 16, Colours.get(000, 400, 400, 555));
+		
+		for (int y = 0; y < screen.height; y++) {
+			for (int x = 0; x < screen.width; x++) {
+				int colourCode = screen.pixels[x+y*screen.width];
+				if(colourCode<255) pixels[x+y*WIDTH] = colours[colourCode];
+			}
+		}
+		
+		Graphics g = bs.getDrawGraphics();
+		g.drawImage(image, 0, 0, getWidth(), getHeight(),null);
+		g.dispose();
+		bs.show();
+		
+		
+	}
+
+}

@@ -5,62 +5,124 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import hcurse.console.KinConsole;
+import hcurse.console.PixelCanvas;
+import hcurse.game.InputHandler;
+import hcurse.game.gfx.Colours;
 import hcurse.human.HumanBox;
 
-public class Controller {
+public class Controller implements Runnable {
 	
 	KinConsole kCons = new KinConsole();
 	HumanBox hBox = HumanBox.build();
 	Clock c = new Clock();
 	int remainMinutes = 0;
 	String buffer = "";
-
-	public static void main(String[] args) {
-
-		boolean run = true;
-		Controller cont = new Controller();
-
-		cont.help();
-		cont.kCons.topPrint(cont.c.toString(), Color.CYAN);
-		cont.kCons.topScrollBottom();
-		cont.kCons.leftScrollBottom();
+	PixelCanvas pCanvas = new PixelCanvas();
+	
+	public boolean running = false;
+	public int tickCount = 0;
+	
+	@Override
+	public void run() {
 		
-		cont.kCons.input.addActionListener(new ActionListener() {
+		//Initialize Variable for time
+		
+		long lastTime = System.nanoTime();
+		double nsPerTick = 1000000000D/60D;
+		int ticks = 0;
+		int frames = 0;
+		long lastTimer = System.currentTimeMillis();
+		double delta = 0;
+		
+		//Temporary Pixel Canvas init
+		pCanvas.init();
+		//Terminal initialization
+		help();
+		kCons.topPrint(c.toString(), Color.CYAN);
+		kCons.topScrollBottom();
+		kCons.leftScrollBottom();
+		
+		
+		kCons.input.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String text = cont.kCons.input.getText();
+				String text = kCons.input.getText();
 
 				if (text.length() > 1) {
-					cont.doCommand(text);
+					doCommand(text);
 				}
 			}
 		});
-
-
-		while (run == true) {
-			cont.kCons.topClear();
+		
+		//Start Running Loop
+		while(running) {
+			long now = System.nanoTime();
 			
-			if (cont.remainMinutes > 0) {
-				if (cont.remainMinutes == 1) {
-					cont.kCons.rightPrint("# Time Stop ! \n");
-					cont.hBox.allHumanPrintWarning(cont.kCons);
+			delta += (now - lastTime) / nsPerTick;
+			lastTime = now;
+			
+			boolean shouldRender = true;
+			
+			while(delta >= 1) {
+				ticks++;
+				pCanvas.tick();
+				//render terminal
+				kCons.topClear();
+				
+				if (remainMinutes > 0) {
+					if (remainMinutes == 1) {
+						kCons.rightPrint("# Time Stop ! \n");
+						hBox.allHumanPrintWarning(kCons);
+					}
+					c.addMinute(1);
+					hBox.allHumanTime();
+					remainMinutes -= 1;
 				}
-				cont.c.addMinute(1);
-				cont.hBox.allHumanTime();
-				cont.remainMinutes -= 1;
+				doTopPrint(remainMinutes);
+				
+				delta -= 1;
+				shouldRender = true;
 			}
-			cont.doTopPrint(cont.remainMinutes);
 			
 			try {
-				Thread.sleep(100);
-			} catch (InterruptedException e1) {
-				e1.printStackTrace();
+				Thread.sleep(2);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			
+			if (shouldRender) {
+				frames++;
+				pCanvas.render();
+				
+				
 			}
 			
 			
+			if(System.currentTimeMillis() - lastTimer > 1000) {
+				lastTimer += 1000;
+				System.out.println("[TICKS:"+ticks+"/FRAMES:"+frames+"]");
+				System.out.println("[Colours.get = "+Colours.get(000, 111, 222, 333));
+				frames = 0;
+				ticks = 0;
+			}	
 		}
+	
 	}
+		
+	public synchronized void start() {
+		running = true;
+		new Thread(this).start();
+	}
+	public synchronized void stop() {
+		running = false;
+	}
+	
+	
+	
+	
+		
+		
 	
 	public void doTopPrint(int i) {
 		kCons.sPrint("- Human Curse - ", Color.RED, KinConsole.TOP_C, true,14);
@@ -134,6 +196,11 @@ public class Controller {
 		kCons.leftPrintln("commands : ", Color.WHITE);
 		kCons.leftPrintln("/help /addTime /stop /print /list /create /clear", Color.GREEN);
 
+	}
+
+	public static void main(String[] args) {
+		Controller cont = new Controller();
+		cont.start();
 	}
 
 }

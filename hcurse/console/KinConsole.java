@@ -33,6 +33,7 @@ public class KinConsole extends JFrame {
 	public StyledDocument rightDocument;
 	
 	public JTextField input;
+	
 
 	Font font = new Font("Courier", Font.PLAIN, 14);
 	Color backgroundColor = new Color(50,50,50);
@@ -86,7 +87,6 @@ public class KinConsole extends JFrame {
 		leftDocument = leftConsole.getStyledDocument();
 		rightDocument = rightConsole.getStyledDocument();
 		
-		
 		setContentPane(buildContentPane());
 		setVisible(true);
 	}
@@ -100,6 +100,7 @@ public class KinConsole extends JFrame {
 		gridPanel.setLayout(new GridLayout(1,2));
 		gridPanel.add(leftConsole);
 		gridPanel.add(rightConsole);
+		
 		
 		panel.add(topConsole, BorderLayout.NORTH);
 		panel.add(gridPanel, BorderLayout.CENTER);

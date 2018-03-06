@@ -5,9 +5,14 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
 
+import hcurse.console.PixelCanvas;
+
 public class InputHandler implements KeyListener {
 	
 	public InputHandler(Game game) {
+		game.addKeyListener(this);
+	}
+	public InputHandler(PixelCanvas game) {
 		game.addKeyListener(this);
 	}
 	
