@@ -39,17 +39,17 @@ public class CHuman extends Mob {
 	public void render(Screen screen) {
 		int xTile = 0;
 		int yTile = 2;
-		int scale = 1;
+		int scale = 2;
 		
 		int modifier = 8*scale;
 		int xOffset = x - modifier / 2 ;
 		int yOffset = y - modifier / 2 - 4;
 		
-		screen.render(xOffset, yOffset , xTile + yTile * 32, colour);
-		screen.render(xOffset + modifier, yOffset, (xTile + 1) + yTile * 32, colour);
+		screen.render(xOffset, yOffset , xTile + yTile * 32, colour, scale);
+		screen.render(xOffset + modifier, yOffset, (xTile + 1) + yTile * 32, colour, scale);
 		
-		screen.render(xOffset, yOffset + modifier, xTile + (yTile + 1) * 32, colour);
-		screen.render(xOffset + modifier, yOffset + modifier, (xTile + 1) + (yTile + 1) * 32, colour);
+		screen.render(xOffset, yOffset + modifier, xTile + (yTile + 1) * 32, colour, scale);
+		screen.render(xOffset + modifier, yOffset + modifier, (xTile + 1) + (yTile + 1) * 32, colour, scale);
 		
 	}
 
